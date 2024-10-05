@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../../public/assets/d_logo.png'
+import logo from '../assets/d_logo.png';
 import { FiGrid, FiClipboard, FiSettings, FiLogOut, FiZap, FiFlag } from 'react-icons/fi';
 
 const Sidebar = () => {
