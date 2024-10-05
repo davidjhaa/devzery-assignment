@@ -1,8 +1,26 @@
-# React + Vite
+# API Chaining Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Setup Instructions
 
-Currently, two official plugins are available:
+1. Clone the repository.
+2. Install dependencies using `npm install`.
+3. Run the application using `npm run dev`.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Approach
+
+This app demonstrates API chaining, where data from one API is passed as input to another. The dashboard fetches user data, creates a new post, and retrieves comments for that post.
+
+### Core Features:
+
+- API chaining (GET and POST requests)
+- Data transformation
+- Error handling and loading states
+
+### Assumptions
+
+- The first user is used for the post creation.
+- All requests are sequential.
+
+### Known Issues
+
+- UI can be improved for better user experience.

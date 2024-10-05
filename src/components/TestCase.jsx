@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { FiEdit } from 'react-icons/fi';
 import { IoCopyOutline } from "react-icons/io5";
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import { addApiObject, editApiObject, removeApiObject } from '../redux/apiSlice';
 
 const initialHeaders = [
     { id: 1, key: 'Content-Type', value: 'application/json' },
@@ -13,21 +13,35 @@ const initialHeaders = [
 ];
 
 const TestCaseForm = () => {
-    const [apiSequences, setApiSequences] = useState([{ id: 1, name: 'Create Coupon API' }]);
+    const dispatch = useDispatch();
+    const[title, setTitle] = useState();
+    const[priority, setPriority] = useState();
+    const[request, setRequest] = useState({});
+    const[response, setResponse] = useState({});
     const [headers, setHeaders] = useState(initialHeaders);
+
+    const handleAddApi = () => {
+        dispatch(
+          addApiObject({
+            title: 'Get User Data',
+            priority: 'high',
+            reqObject: { userId: 1 },
+            resObject: { data: [] },
+            header: { Authorization: 'Bearer token' },
+          })
+        );
+      };
 
     const addApiSequence = () => {
         const newId = apiSequences.length + 1;
         setApiSequences([...apiSequences, { id: newId, name: `New API Sequence ${newId}` }]);
     };
 
-    // Add an empty header
     const addHeader = () => {
         const newId = headers.length + 1;
         setHeaders([...headers, { id: newId, key: '', value: '', isEditableKey: true, isEditableValue: true }]);
     };
 
-    // Toggle key editability for a specific header
     const toggleEditableKey = (id) => {
         setHeaders(
             headers.map(header =>
@@ -45,7 +59,6 @@ const TestCaseForm = () => {
         );
     };
 
-    // Update header key
     const handleKeyChange = (id, newKey) => {
         setHeaders(
             headers.map(header =>
@@ -54,7 +67,6 @@ const TestCaseForm = () => {
         );
     };
 
-    // Update header value
     const handleValueChange = (id, newValue) => {
         setHeaders(
             headers.map(header =>
@@ -69,7 +81,10 @@ const TestCaseForm = () => {
                 <div className="flex justify-between items-center mb-2">
                     <h1 className="text-2xl font-semibold mb-4 text-pink-500">New Test Case</h1>
                     <div>
-                        <button className="bg-pink-500 hover:bg-pink-600 text-white py-1 px-6 rounded-lg mr-2">
+                        <button 
+                            onClick={handleAddApi}
+                            className="bg-pink-500 hover:bg-pink-600 text-white py-1 px-6 rounded-lg mr-2"
+                        >
                             Add
                         </button>
                         <button className="bg-black text-white py-1 px-4 rounded-lg">
@@ -136,7 +151,7 @@ const TestCaseForm = () => {
             </div>
             {/* right half */}
             <div className="w-auto bg-gray-900 px-4 py-4">
-                <div className="bg-gray-700 flex justify-center items-center mb-8 rounded-lg">
+                <div className="bg-gray-700 flex justify-center items-center mb-4 rounded-lg">
                     <button
                         onClick={addHeader}
                         className="  text-pink-400 py-2 px-4 rounded-lg"
@@ -144,11 +159,11 @@ const TestCaseForm = () => {
                         + Add Header
                     </button>
                 </div>
-
-                <span className='text-lg text-white '>Headers</span>
-
+                <div className='mb-3'>
+                    <span className='text-lg text-white'>Headers</span>
+                </div>
                 {headers.map((header) => (
-                    <div key={header.id} className="w-full bg-gray-900 rounded-lg mb-8">
+                    <div key={header.id} className="w-full bg-gray-900 rounded-lg mb-4">
                         {/* Key Field */}
                         <div className="w-full flex justify-between bg-gray-600 p-1 rounded-tl-lg rounded-tr-lg">
                             {header.isEditableKey ? (
@@ -165,7 +180,7 @@ const TestCaseForm = () => {
                                 onClick={() => toggleEditableKey(header.id)}
                                 className="text-gray-300 ml-2"
                             >
-                               <FiEdit />
+                                <FiEdit />
                             </button>
                         </div>
 
@@ -190,40 +205,6 @@ const TestCaseForm = () => {
                         </div>
                     </div>
                 ))}
-
-                {/* {headers.map((header) => (
-                    <div key={header.id} className="w-full bg-gray-900 rounded-lg mb-3">
-                        <div className='w-full flex justify-between bg-gray-600'>
-                            <input
-                                type="text"
-                                value={header.key}
-                                onChange={(e) => handleKeyChange(header.id, e.target.value)}
-                                className="bg-gray-600 p-2 text-white rounded-lg w-full"
-                            />
-                            <button
-                                onClick={() => toggleEditableKey(header.id)}
-                                className="text-gray-300"
-                            >
-                                <FiEdit />
-                            </button>
-                        </div>
-                        {/* Value Field */}
-                        {/* <div className='w-full flex justify-between bg-gray-800'>
-                            <input
-                                type="text"
-                                value={header.value}
-                                onChange={(e) => handleValueChange(header.id, e.target.value)}
-                                className="bg-gray-800 p-2 text-white rounded-lg w-full"
-                            />
-                            <button
-                                onClick={() => toggleEditableValue(header.id)}
-                                className="text-gray-300"
-                            >
-                                <FiEdit />
-                            </button>
-                        </div>
-                    </div>
-                ))} */} 
             </div>
         </div>
     );
